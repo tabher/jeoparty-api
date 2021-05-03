@@ -3,6 +3,7 @@ package com.hersystems.jeoparty.controller;
 import com.hersystems.jeoparty.constants.Rating;
 import com.hersystems.jeoparty.domain.Category;
 import com.hersystems.jeoparty.domain.Question;
+import com.hersystems.jeoparty.errorhandling.ResourceAlreadyExistsException;
 import com.hersystems.jeoparty.errorhandling.ResourceNotFoundException;
 import com.hersystems.jeoparty.service.CategoryService;
 import org.junit.jupiter.api.BeforeEach;
@@ -18,6 +19,8 @@ import java.util.List;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -77,15 +80,47 @@ class CategoryControllerTest {
     @DisplayName("getCategory success")
     public void givenGetCategory_whenCategoryExists_thenReturnHttpStatus200() throws ResourceNotFoundException {
         //arrange
+        when(mockService.findCategoryById(anyString())).thenReturn(category);
         //act
+        ResponseEntity actual = underTest.getCategory(category.getId());
         //assert
+        assertEquals(200, actual.getStatusCodeValue());
+        assertEquals(category, actual.getBody());
     }
 
     @Test
     @DisplayName("getCategory throws ResourceNotFoundException")
     public void givenGetCategory_whenCategoryDontExist_thenThrowResourceNotFoundException() throws ResourceNotFoundException {
         //arrange
+        when(mockService.findCategoryById(anyString())).thenThrow(ResourceNotFoundException.class);
         //act
         //assert
+        assertThrows(ResourceNotFoundException.class, () -> {
+           underTest.getCategory(category.getId());
+        });
+    }
+
+    @Test
+    @DisplayName("createNewCategory success")
+    public void givenCreateNewCategory_whenCategoryDoesNotExist_thenReturnHttpStatus200() throws ResourceAlreadyExistsException, ResourceNotFoundException {
+        //arrange
+        when(mockService.saveNewCategory(any())).thenReturn(category);
+        //act
+        ResponseEntity actual = underTest.createNewCategory(category);
+        //assert
+        assertEquals(200, actual.getStatusCodeValue());
+        assertEquals(category, actual.getBody());
+    }
+
+    @Test
+    @DisplayName("createNewCategory throws ResourceAlreadyExistsException")
+    public void givenCreateNewCategory_whenCategoryExists_thenThrowResourceAlreadyExistsException() throws ResourceAlreadyExistsException {
+        //arrange
+        when(mockService.saveNewCategory(any())).thenThrow(ResourceAlreadyExistsException.class);
+        //act
+        //assert
+        assertThrows(ResourceAlreadyExistsException.class, () -> {
+            underTest.createNewCategory(category);
+        });
     }
 }
