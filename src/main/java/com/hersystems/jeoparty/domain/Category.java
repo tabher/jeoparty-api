@@ -28,4 +28,20 @@ public class Category {
 
     public Category() {
     }
+
+    public String getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public Rating getRating() {
+        return rating;
+    }
+
+    public List<Question> getQuestionList() {
+        return questionList;
+    }
 }

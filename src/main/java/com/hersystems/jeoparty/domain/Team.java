@@ -20,4 +20,24 @@ public class Team {
 
     public Team() {
     }
+
+    public String getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public long getScore() {
+        return score;
+    }
+
+    public List<Question> getAnsweredCorrect() {
+        return answeredCorrect;
+    }
+
+    public List<Player> getMemberList() {
+        return memberList;
+    }
 }

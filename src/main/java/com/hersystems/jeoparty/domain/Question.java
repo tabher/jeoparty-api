@@ -20,4 +20,24 @@ public class Question {
 
     public Question() {
     }
+
+    public String getId() {
+        return id;
+    }
+
+    public String getText() {
+        return text;
+    }
+
+    public String getAnswer() {
+        return answer;
+    }
+
+    public long getPoints() {
+        return points;
+    }
+
+    public boolean isDouble() {
+        return isDouble;
+    }
 }
