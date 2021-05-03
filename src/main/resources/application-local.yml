@@ -1,0 +1,10 @@
+spring:
+  data:
+    mongodb:
+      database: jeoparty
+      authentication-database: admin
+      uri: ENC(xH93lV9RZt4emoveupvd/jatbtHmQEaLJfYmuwVRAx44d3rbgI7Aw7i+EW8BK+BMV51xvAODmu0=)
+  security:
+    user:
+      name: ENC(qC+FQBwhfmm30rJM7+mo1GpVVi1e7G2G)
+      password: ENC(G/owa2GmDL/wYXGMrO+DckJmec2bl/dp)
