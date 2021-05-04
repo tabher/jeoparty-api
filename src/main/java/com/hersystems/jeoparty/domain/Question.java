@@ -1,12 +1,21 @@
 package com.hersystems.jeoparty.domain;
 
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
+@Document(collection = "question")
 public class Question {
 
+    @Id
     private String id;
+    @NotNull
     private String text;
+    @NotNull
     private String answer;
+    @NotNull
     private long points;
     private boolean isDouble;
 

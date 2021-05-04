@@ -36,8 +36,16 @@ public class CategoryService {
     }
 
     public Category saveNewCategory(final Category newCategory) throws ResourceAlreadyExistsException {
-        Optional<Category> result = categoryRepository.findById(newCategory.getId());
-        if (result.isPresent()) {
+        Optional<Category> result;
+
+        if(ObjectUtils.isEmpty(newCategory.getId())) {
+            result = Optional.ofNullable(categoryRepository.findCategoryByName(newCategory.getName()));
+        }
+        else {
+            result = categoryRepository.findById(newCategory.getId());
+        }
+
+        if (!ObjectUtils.isEmpty(result)) {
             throw new ResourceAlreadyExistsException("Category already exists");
         }
         return categoryRepository.save(newCategory);
