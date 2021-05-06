@@ -38,10 +38,10 @@ public class CategoryController {
         return ResponseEntity.ok(categoryService.findCategoryById(id));
     }
 
-    @PostMapping(value = postCategoryUrl, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Category> createNewCategory(@RequestBody @Valid Category category) throws ResourceAlreadyExistsException {
-        logger.info("POST " + postCategoryUrl + " initiated");
-        return ResponseEntity.ok(categoryService.saveNewCategory(category));
-    }
+//    @PostMapping(value = postCategoryUrl, produces = MediaType.APPLICATION_JSON_VALUE)
+//    public ResponseEntity<Category> createNewCategory(@RequestBody @Valid Category category) throws ResourceAlreadyExistsException {
+//        logger.info("POST " + postCategoryUrl + " initiated");
+//        return ResponseEntity.ok(categoryService.saveNewCategory(category));
+//    }
 
 }

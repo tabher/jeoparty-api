@@ -1,47 +1,85 @@
 package com.hersystems.jeoparty.domain;
 
 import com.hersystems.jeoparty.constants.Rating;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.validation.constraints.NotNull;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-@Document(collection = "category")
-public class Category {
-    @Id
-    private String id;
-    @NotNull
-    private String name;
-    @NotNull
-    private Rating rating;
-    private List<Question> questionList = new ArrayList();
 
-    public Category(String id, String name, Rating rating, List<Question> questionList) {
-        this.id = id;
+public class Category {
+
+    private CategoryId categoryId;
+    private Name name;
+    private Rating rating;
+    private List<Question> questionList;
+
+    public Category(CategoryId categoryId, Name name, Rating rating, List<Question> questionList) {
+
+        this.categoryId = categoryId;
         this.name = name;
         this.rating = Objects.requireNonNullElse(rating, Rating.EVERYONE);
         this.questionList = questionList;
     }
 
-    public Category() {
+    public CategoryId getCategoryId() {
+        return categoryId;
     }
 
-    public String getId() {
-        return id;
+    @Override
+    public int hashCode() {
+        return super.hashCode();
     }
 
-    public String getName() {
-        return name;
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this) {
+            return true;
+        }
+        if (obj == null || obj.getClass() != getClass()) {
+            return false;
+        }
+        return super.equals(obj);
     }
 
-    public Rating getRating() {
-        return rating;
-    }
+    //TODO add categoryMethods
+    public static class CategoryBuilder {
+        private CategoryId categoryId;
+        private Name name;
+        private Rating rating;
+        private List<Question> questionList;
 
-    public List<Question> getQuestionList() {
-        return questionList;
+        public CategoryBuilder(){}
+
+        public CategoryBuilder(Category original) {
+            categoryId = original.categoryId;
+            name = original.name;
+            rating = original.rating;
+            questionList = original.questionList;
+        }
+
+        public CategoryBuilder withCategoryId(CategoryId id) {
+            this.categoryId = id;
+            return this;
+        }
+
+        public CategoryBuilder withName(Name name) {
+            this.name = name;
+            return this;
+        }
+
+        public CategoryBuilder withRating(Rating rating) {
+            this.rating = rating;
+            return this;
+        }
+
+        public CategoryBuilder withQuestionList(List<Question> questionList) {
+            this.questionList = questionList;
+            return this;
+        }
+
+        public Category build() {
+            return new Category(categoryId, name, rating, questionList);
+        }
+
     }
 }

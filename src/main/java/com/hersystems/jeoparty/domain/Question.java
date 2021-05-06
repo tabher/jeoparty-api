@@ -1,52 +1,71 @@
 package com.hersystems.jeoparty.domain;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
-
-import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
-@Document(collection = "question")
 public class Question {
 
-    @Id
-    private String id;
-    @NotNull
+    private QuestionId id;
     private String text;
-    @NotNull
-    private String answer;
-    @NotNull
-    private long points;
+    private Answer answer;
+    private Score score;
     private boolean isDouble;
 
-    public Question(String id, String text, String answer, long points, boolean isDouble) {
+    public Question(QuestionId id, String text, Answer answer, Score score, boolean isDouble) {
         this.id = id;
         this.text = text;
         this.answer = answer;
-        this.points = points;
+        this.score = score;
         this.isDouble = Objects.requireNonNullElse(isDouble, false);
     }
 
-    public Question() {
-    }
+    //builder class obj
+    public static class Builder {
+        private QuestionId id;
+        private String text;
+        private Answer answer;
+        private Score score;
+        private boolean isDouble;
 
-    public String getId() {
-        return id;
-    }
+        public Builder() {
+            //empty constr
+        }
 
-    public String getText() {
-        return text;
-    }
+        //modify existing question
+        public Builder(Question original) {
+            id = original.id;
+            text = original.text;
+            answer = original.answer;
+            score = original.score;
+            isDouble = original.isDouble;
+        }
 
-    public String getAnswer() {
-        return answer;
-    }
+        public Builder withId(QuestionId id) {
+            this.id = id;
+            return this;
+        }
 
-    public long getPoints() {
-        return points;
-    }
+        public Builder withText(String text) {
+            this.text = text;
+            return this;
+        }
 
-    public boolean isDouble() {
-        return isDouble;
+        public Builder withAnswer(Answer answer) {
+            this.answer = answer;
+            return this;
+        }
+
+        public Builder withScore(Score score) {
+            this.score = score;
+            return this;
+        }
+
+        public Builder withIsDouble(boolean isDouble) {
+            this.isDouble = isDouble;
+            return this;
+        }
+
+        public Question build() {
+            return new Question(id, text, answer, score, isDouble);
+        }
     }
 }

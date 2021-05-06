@@ -21,6 +21,7 @@ dependencies {
 	compile 'org.hibernate:hibernate-validator:7.0.1.Final'
 	implementation group: 'org.jasypt', name: 'jasypt', version: '1.9.3'
 	implementation 'com.github.ulisesbocchio:jasypt-spring-boot-starter:3.0.3'
+	implementation("com.google.guava:guava:30.1.1-jre")
 
 
 }
