@@ -1,6 +1,7 @@
 package com.hersystems.jeoparty.service;
 
 import com.hersystems.jeoparty.domain.Category;
+import com.hersystems.jeoparty.errorhandling.ResourceAlreadyExistsException;
 import com.hersystems.jeoparty.errorhandling.ResourceNotFoundException;
 import com.hersystems.jeoparty.repo.ICategoryRepository;
 import org.springframework.stereotype.Service;
@@ -21,7 +22,7 @@ public class CategoryService {
     public List<Category> findAllCategories() throws ResourceNotFoundException {
 
         List resultSet = categoryRepository.findAll();
-        if(ObjectUtils.isEmpty(resultSet)) {
+        if (ObjectUtils.isEmpty(resultSet)) {
             throw new ResourceNotFoundException("Unable to find categories");
         }
         return resultSet;
@@ -35,18 +36,19 @@ public class CategoryService {
         return result.get();
     }
 
-//    public Category saveNewCategory(final Category newCategory) throws ResourceAlreadyExistsException {
-//        Optional<Category> result;
-//
-//        if(ObjectUtils.isEmpty(newCategory.getId())) {
-//            result = Optional.ofNullable(categoryRepository.findCategoryByName(newCategory.getName()));
-//        }
-//        else {
-//            result = categoryRepository.findById(newCategory.getId());
-//        }
-//
-//        if (!ObjectUtils.isEmpty(result)) {
-//            throw new ResourceAlreadyExistsException("Category already exists");
-//        }
-//        return categoryRepository.save(newCategory);
+    public Category saveNewCategory(final Category newCategory) throws ResourceAlreadyExistsException {
+        Optional<Category> result;
+        result = Optional.ofNullable(categoryRepository.findCategoryByName(newCategory.getName()));
+
+        if (ObjectUtils.isEmpty(newCategory.getCategoryId())) {
+            result = Optional.ofNullable(categoryRepository.findCategoryByName(newCategory.getName()));
+        } else {
+            result = categoryRepository.findById(String.valueOf(newCategory.getCategoryId()));
+        }
+
+        if (!ObjectUtils.isEmpty(result)) {
+            throw new ResourceAlreadyExistsException("Category already exists");
+        }
+        return categoryRepository.save(newCategory);
     }
+}

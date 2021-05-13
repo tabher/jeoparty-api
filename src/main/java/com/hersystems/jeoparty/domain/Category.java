@@ -24,6 +24,9 @@ public class Category {
     public CategoryId getCategoryId() {
         return categoryId;
     }
+    public Name getName() {
+        return name;
+    }
 
     @Override
     public int hashCode() {
