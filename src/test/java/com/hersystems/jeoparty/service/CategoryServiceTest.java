@@ -2,6 +2,7 @@ package com.hersystems.jeoparty.service;
 
 import com.hersystems.jeoparty.constants.Rating;
 import com.hersystems.jeoparty.domain.*;
+import com.hersystems.jeoparty.errorhandling.ResourceAlreadyExistsException;
 import com.hersystems.jeoparty.errorhandling.ResourceNotFoundException;
 import com.hersystems.jeoparty.repo.ICategoryRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -12,10 +13,12 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -70,5 +73,49 @@ class CategoryServiceTest {
         //act
         //assert
         assertThrows(ResourceNotFoundException.class, () -> underTest.findAllCategories());
+    }
+
+    @Test
+    @DisplayName("findCategoryById success")
+    public void givenCategoryDoesExist_whenFindCategoryById_returnCategory() throws ResourceNotFoundException {
+        //arrange
+        when(mockRepo.findById(anyString())).thenReturn(Optional.ofNullable(category));
+        //act
+        Category actual = underTest.findCategoryById(category.getCategoryId().toString());
+        //assert
+        assertEquals(category, actual);
+    }
+
+    @Test
+    @DisplayName("findCategoryById throws ResourceNotFoundException")
+    public void givenCategoryDoesNotExist_whenFindByCategoryId_thenThrowResourceNotFoundException() throws ResourceNotFoundException {
+        //arrange
+        when(mockRepo.findById(anyString())).thenReturn(Optional.empty());
+        //act
+        //assert
+        assertThrows(ResourceNotFoundException.class, () -> underTest.findCategoryById(category.getCategoryId().toString()));
+    }
+
+    @Test
+    @DisplayName("saveNewCategory success")
+    public void givenCategoryDoesNotExist_whenSaveNewCategory_thenReturnSavedEntity() throws ResourceAlreadyExistsException {
+        //arrange
+        when(mockRepo.findCategoryByName(category.getName())).thenReturn(null);
+        when(mockRepo.findById(anyString())).thenReturn(null);
+        when(mockRepo.save(category)).thenReturn(category);
+        //act
+        Category actual = underTest.saveNewCategory(category);
+        //assert
+        assertEquals(category, actual);
+    }
+
+    @Test
+    @DisplayName("saveNewCategory throws ResourceAlreadyExistsException")
+    public void givenCategoryDoesExist_whenSaveNewCategory_thenThrowResourceAlreadyExistsException() throws ResourceAlreadyExistsException{
+        //arrange
+        when(mockRepo.findById(anyString())).thenReturn(Optional.ofNullable(category));
+        //act
+        //assert
+        assertThrows(ResourceAlreadyExistsException.class, () -> underTest.saveNewCategory(category));
     }
 }
