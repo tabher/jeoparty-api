@@ -1,6 +1,7 @@
 package com.hersystems.jeoparty.domain;
 
 import com.hersystems.jeoparty.constants.Rating;
+import com.hersystems.jeoparty.errorhandling.ResourceNotFoundException;
 
 import java.util.List;
 import java.util.Objects;
@@ -42,6 +43,14 @@ public class Category {
             return false;
         }
         return super.equals(obj);
+    }
+
+    //TODO: add unit test for this method
+    public List<Question> getQuestionList() throws ResourceNotFoundException{
+        if(questionList.isEmpty()) {
+            throw new ResourceNotFoundException("CategoryId: " + categoryId + " does not have any questions");
+        }
+        return questionList;
     }
 
     //TODO add categoryMethods
