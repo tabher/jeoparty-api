@@ -40,7 +40,7 @@ public class CategoryService {
         Optional<Category> result;
 
         if (ObjectUtils.isEmpty(newCategory.getCategoryId())) {
-            result = Optional.ofNullable(categoryRepository.findCategoryByName(newCategory.getName()));
+            result = Optional.ofNullable(categoryRepository.findCategoryByName(newCategory.getName().toString()));
         } else {
             result = categoryRepository.findById(String.valueOf(newCategory.getCategoryId()));
         }

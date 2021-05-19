@@ -100,7 +100,7 @@ class CategoryServiceTest {
     @DisplayName("saveNewCategory success")
     public void givenCategoryDoesNotExist_whenSaveNewCategory_thenReturnSavedEntity() throws ResourceAlreadyExistsException {
         //arrange
-        when(mockRepo.findCategoryByName(category.getName())).thenReturn(null);
+        when(mockRepo.findCategoryByName(anyString())).thenReturn(null);
         when(mockRepo.findById(anyString())).thenReturn(null);
         when(mockRepo.save(category)).thenReturn(category);
         //act

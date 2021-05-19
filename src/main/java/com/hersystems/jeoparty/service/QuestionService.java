@@ -22,8 +22,7 @@ public class QuestionService {
     }
 
     public List<Question> findAllQuestions(String categoryName) throws ResourceNotFoundException {
-        //TODO: implement custom findBy query when categoryName provided
-        Category existingCategory = categoryRepository.findCategoryByName();
+        Category existingCategory = categoryRepository.findCategoryByName(categoryName);
         if(ObjectUtils.isEmpty(existingCategory)) {
             throw new ResourceNotFoundException("Unable to find a category: cannot return questions if category does not exist");
         }
