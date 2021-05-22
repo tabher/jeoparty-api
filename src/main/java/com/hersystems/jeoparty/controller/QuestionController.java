@@ -18,6 +18,7 @@ public class QuestionController {
     private final QuestionService questionService;
     private final Logger logger;
     private final String getQuestionsUrl = "/categories/{categoryName}/questions";
+    private final String getQuestionUrl = "/categories/{categoryName}/{questionId}";
 
     public QuestionController(final QuestionService questionService, final Logger logger) {
         this.questionService = questionService;

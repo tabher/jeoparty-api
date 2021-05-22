@@ -22,10 +22,19 @@ public class QuestionService {
     }
 
     public List<Question> findAllQuestions(String categoryName) throws ResourceNotFoundException {
-        Category existingCategory = categoryRepository.findCategoryByName(categoryName);
+        Category existingCategory = findExistingCategoryByName(categoryName);
         if(ObjectUtils.isEmpty(existingCategory)) {
             throw new ResourceNotFoundException("Unable to find a category: cannot return questions if category does not exist");
         }
         return existingCategory.getQuestionList();
+    }
+
+    private Category findExistingCategoryByName(String name) throws ResourceNotFoundException {
+        Category result = categoryRepository.findCategoryByName(name);
+
+        if(ObjectUtils.isEmpty(result)) {
+            throw new ResourceNotFoundException("Unable to find category with name: " + name);
+        }
+        return result;
     }
 }
