@@ -30,4 +30,11 @@ public class QuestionController {
         logger.info("GET " + getQuestionsUrl + " initiated");
         return ResponseEntity.ok(questionService.findAllQuestions(categoryName));
     }
+
+    @GetMapping(value = getQuestionUrl, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Question> getQuestion(@PathVariable("categoryName") String categoryName,
+                                                @PathVariable("questionId") String questionId) throws ResourceNotFoundException {
+        logger.info("GET " + getQuestionUrl + " initiated");
+        return ResponseEntity.ok(questionService.findByQuestionId(categoryName, questionId));
+    }
 }

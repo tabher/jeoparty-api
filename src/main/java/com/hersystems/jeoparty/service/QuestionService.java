@@ -29,6 +29,27 @@ public class QuestionService {
         return existingCategory.getQuestionList();
     }
 
+    public Question findByQuestionId(String categoryName, String questionId) throws ResourceNotFoundException {
+        Category existingCategory = findExistingCategoryByName(categoryName);
+        if(ObjectUtils.isEmpty(existingCategory)) {
+            throw new ResourceNotFoundException("Unable to find a category: cannot return question if category does not exist");
+        }
+
+        if(containsName(existingCategory.getQuestionList(), questionId)) {
+            //pop var with index
+            existingCategory.getQuestionList().indexOf();
+        }
+        return existingCategory.getQuestionList().get();
+    }
+
+    private boolean containsName(final List<Question> list, final String name){
+        return list.stream().anyMatch(o -> o.toString().equals(name));
+    }
+
+    private int indexOf(final List<Question> list, final String name) {
+        return list.indexOf(o -> list.stream().anyMatch(o -> o.toString().equals(name)));
+    }
+
     private Category findExistingCategoryByName(String name) throws ResourceNotFoundException {
         Category result = categoryRepository.findCategoryByName(name);
 

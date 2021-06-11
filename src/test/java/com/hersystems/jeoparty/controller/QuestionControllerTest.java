@@ -73,4 +73,25 @@ class QuestionControllerTest {
         //assert
         assertThrows(ResourceNotFoundException.class, () -> underTest.getQuestions(category.getName().toString()));
     }
+
+    @Test
+    @DisplayName("getQuestion success")
+    public void givenGetQuestion_whenQuestionExists_thenReturnHttpStatus200() throws ResourceNotFoundException {
+        //arrange
+        when(mockQuestionService.findByQuestionId(anyString(), anyString())).thenReturn(question);
+        //act
+        ResponseEntity actual = underTest.getQuestion(category.getName().toString(),question.toString());
+        //assert
+        assertEquals(200, actual.getStatusCodeValue());
+    }
+
+    @Test
+    @DisplayName("getQuestion throws ResourceNotFoundException")
+    public void givenGetQuestion_whenCategoryDoesNotExist_thenThrowResourceNotFoundException() throws ResourceNotFoundException {
+        //arrange
+        when(mockQuestionService.findByQuestionId(anyString()), anyString()).thenThrow(ResourceNotFoundException.class);
+        //act
+        //assert
+        assertThrows(ResourceNotFoundException.class, () -> underTest.getQuestion(category.getName().toString(), question.toString()));
+    }
 }
